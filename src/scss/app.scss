@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.header {
+    display: grid;
+    grid-template-areas: "header-logo header-menu header-icons";
+    grid-template-columns: 1fr 2fr 1fr;
+    &__logo {
+        grid-area: header-logo;
+    }
+
+    &__menu {
+        grid-area: header-menu;
+    }
+
+    &__icons {
+        grid-area: header-icons;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-areas: "header-menu header-logo header-icons";
+        grid-template-columns: 1fr 2fr 1fr;
+        &__logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__menu {
+            .header__menu-nav {
+                display: none !important;
+            }
+        }
+    }
+}
+
+
+.nav__item {
+    &:hover {
+        .nav__item-submenu {
+            display: block;
+        }
+    }
+
+    &-submenu {
+    }
+}
+
+
+.arrow__rotate {
+    transition: 0.3s all;
+    &.open {
+        rotate: 180deg;
+    }
+}
