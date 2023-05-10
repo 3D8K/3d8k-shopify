@@ -10,5 +10,5 @@
     "editor.defaultFormatter": "sissel.shopify-liquid",
     "editor.formatOnSave": true
   },
-  "liquid.format.enable": false
+  "liquid.format.enable": true
 }
