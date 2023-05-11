@@ -1,0 +1,80 @@
+<div
+  class="relative z-10"
+  aria-labelledby="slide-over-title"
+  role="dialog"
+  x-data="{openMenu: false}"
+  x-show="openMenu"
+  @resize.window="
+        width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+            if (width > 768) {
+                openMenu = false
+        }"@toggle-menu.window="openMenu=!openMenu"
+  aria-modal="true">
+  <div class="fixed inset-0 overflow-hidden bg-gray-500 bg-opacity-75 transition-opacity">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="pointer-events-none fixed inset-y-0 left-0 flex max-w-full">
+        <div class="pointer-events-auto relative w-screen max-w-md">
+          <div class="absolute right-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
+            <button
+              type="button"
+              class="rounded-md text-gray-300 hover:text-black focus:outline-none focus:ring-2 focus:ring-white"
+              @click="openMenu = false">
+              <span class="sr-only">Close panel</span>
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div
+            class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl hide-scrollbar animate-fade"
+            x-transition
+            x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+            x-transition:enter-start="-translate-x-full opacity-0"
+            x-transition:enter-end="translate-x-0 opacity-100"
+            x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+            x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="-translate-x-full opacity-0">
+            <div class="relative mt-6 flex-1 px-4 sm:px-6">
+              <ul class="header__menu-nav flex flex-col gap-7 items-start justify-center">
+                {%- for link in section.settings.menu.links -%}
+                  {% if link.links != blank %}
+                    <li class="nav__item flex items-center gap-1 relative flex-col" x-data="{ {{ link.title }}_value : false }">
+                      <div class="flex gap-1 items-center flex-row">
+                        <a href="{{ link.url }}" class="text-3xl uppercase">{{ link.title }}</a>
+                        <button
+                          @click="{{ link.title }}_value = !{{ link.title }}_value"
+                          x-bind:class="{ arrow_rotate: {{ link.title }}_value }"
+                          class="transition">{% render 'icon-chevrone' %}</button>
+                      </div>
+                      <ul class="top-10 bg-white w-full flex flex-col animate-fade" x-show="{{ link.title }}_value">
+                        {% for link in link.links %}
+                          <li class="p-2 hover:bg-slate-200 transition-colors">
+                            <a href="{{ link.url }}" class="text-2xl uppercase w-full flex">{{ link.title }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% else %}
+                    <li>
+                      <a href="{{ link.url }}" class="text-3xl uppercase">{{ link.title }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

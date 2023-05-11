@@ -12,8 +12,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        fade: 'fadeOut 0.3s ease-in-out',
+      },
       keyframes: {
-        fade: {
+        fadeOut: {
           '0%': { opacity: '0' },
           '100%': { opacity: '100' },
         },

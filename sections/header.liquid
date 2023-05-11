@@ -1,63 +1,65 @@
-<header class="header p-5">
-  <div class="header__logo">
-    {% if settings.logo != blank %}
-      <a class="w-15" href="{{routes.root_url}}">{{ settings.logo | image_url: width: 100 | image_tag }}</a>
-    {% else %}
-      <a class="w-15 text-4xl weight-blod" href="{{routes.root_url}}">{{ shop.name }}</a>
-    {% endif %}
-  </div>
-  <div class="header__menu">
-    <ul class="header__menu-nav flex flex-row gap-7 items-center justify-center">
-      {%- for link in section.settings.menu.links -%}
-        {% if link.links != blank %}
-          <li class="nav__item flex items-center gap-1 relative">
-            <a href="{{ link.url }}" class="text-3xl uppercase">{{ link.title }}</a>
-            <button>{% render 'icon-chevrone' %}</button>
-            <ul class="nav__item-submenu absolute top-10 bg-white w-full">
-              {% for link in link.links %}
-                <li class="p-2 hover:bg-slate-200 transition-colors">
-                  <a href="{{ link.url }}" class="text-2xl uppercase w-full flex">{{ link.title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </li>
-        {% else %}
-          <li>
-            <a href="{{ link.url }}" class="text-3xl uppercase">{{ link.title }}</a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-    <button class="header__menu-button hidden w-10">{% render 'icon-hamburger' %}</button>
-  </div>
-  <div class="header__icons">
-    <div class="flex items-center gap-3 pr-6">
-      {%- if shop.customer_accounts_enabled -%}
-        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset">
-          {% render 'icon-account' %}
-        </a>
-      {%- endif -%}
-      <a
-        href="{{ routes.cart_url }}"
-        class="header__icon header__icon--cart link focus-inset"
-        id="cart-icon-bubble">
-        {%- liquid
+<div>
+  <header class="header p-5 max-w-screen-2xl m-auto">
+    <div class="header__logo">
+      {% if settings.logo != blank %}
+        <a class="w-15" href="{{routes.root_url}}">{{ settings.logo | image_url: width: 100 | image_tag }}</a>
+      {% else %}
+        <a class="w-15 text-4xl weight-blod" href="{{routes.root_url}}">{{ shop.name }}</a>
+      {% endif %}
+    </div>
+    <div class="header__menu">
+      <ul class="header__menu-nav flex flex-row gap-7 items-center justify-center">
+        {%- for link in section.settings.menu.links -%}
+          {% if link.links != blank %}
+            <li class="nav__item flex items-center gap-1 relative">
+              <a href="{{ link.url }}" class="text-3xl uppercase">{{ link.title }}</a>
+              <button>{% render 'icon-chevrone' %}</button>
+              <ul class="nav__item-submenu absolute top-10 bg-white w-full">
+                {% for link in link.links %}
+                  <li class="p-2 hover:bg-slate-200 transition-colors">
+                    <a href="{{ link.url }}" class="text-2xl uppercase w-full flex">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% else %}
+            <li>
+              <a href="{{ link.url }}" class="text-3xl uppercase">{{ link.title }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <button class="header__menu-button hidden w-10" @click="$dispatch('toggle-menu')">{% render 'icon-hamburger' %}</button>
+    </div>
+    <div class="header__icons">
+      <div class="flex items-center gap-3 pr-6">
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset">
+            {% render 'icon-account' %}
+          </a>
+        {%- endif -%}
+        <a
+          href="{{ routes.cart_url }}"
+          class="header__icon header__icon--cart link focus-inset"
+          id="cart-icon-bubble">
+          {%- liquid
       if cart == empty
         render 'icon-cart-empty'
       else
         render 'icon-cart'
       endif
     -%}
-      </a>
+        </a>
+      </div>
     </div>
-  </div>
-</header>
-
+  </header>
+  {% render 'mobile-menu' %}
+</div>
 <script type="application/ld+json">
   {
   "@context": "http://schema.org",
-                                                                                                                                                            "@type": "Organization",
-                                                                                                                                                            "name": {{ shop.name | json }},
+                                                                                                                                                                                  "@type": "Organization",
+                                                                                                                                                                                  "name": {{ shop.name | json }},
   {% if settings.logo %}
     "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
   {% endif %}
@@ -81,14 +83,14 @@
   <script type="application/ld+json">
     {
     "@context": "http://schema.org",
-                                                                                                                                                                                                                                                                                                                      "@type": "WebSite",
-                                                                                                                                                                                                                                                                                                                      "name": {{ shop.name | json }},
+                                                                                                                                                                                                                                                                                                                                                                  "@type": "WebSite",
+                                                                                                                                                                                                                                                                                                                                                                  "name": {{ shop.name | json }},
     "potentialAction": {
-                                                                                                                                                                                                                                                                                                                        "@type": "SearchAction",
-                                                                                                                                                                                                                                                                                                                        "target": {{ potential_action_target | json }},
+                                                                                                                                                                                                                                                                                                                                                                    "@type": "SearchAction",
+                                                                                                                                                                                                                                                                                                                                                                    "target": {{ potential_action_target | json }},
     "query-input": "required name=search_term_string"
-                                                                                                                                                                                                                                                                                                                      },
-                                                                                                                                                                                                                                                                                                                      "url": {{ request.origin | append: page.url | json }}
+                                                                                                                                                                                                                                                                                                                                                                  },
+                                                                                                                                                                                                                                                                                                                                                                  "url": {{ request.origin | append: page.url | json }}
     }
   </script>
 {%- endif -%}
