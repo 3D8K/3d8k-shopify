@@ -32,6 +32,10 @@
             .header__menu-nav {
                 display: none !important;
             }
+
+            .header__menu-button {
+                display: flex !important;
+            }
         }
     }
 }
@@ -45,13 +49,6 @@
     }
 
     &-submenu {
-    }
-}
-
-
-.arrow__rotate {
-    transition: 0.3s all;
-    &.open {
-        rotate: 180deg;
+        display: none;
     }
 }
